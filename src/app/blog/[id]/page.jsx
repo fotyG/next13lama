@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 
 async function getData(id) {
-  const res = await fetch("http://jsonplaceholder.typicode.com/posts/"+id, {
+  const res = await fetch("http://localhost:3000/api/posts/" + id, {
     cache: "no-store",
   });
 
@@ -14,21 +14,23 @@ async function getData(id) {
   return res.json();
 }
 
-const BlogPost = async ({params}) => {
-  const data = await getData(params.id)
+export async function generateMetadata({ params }) {
+
+  const post = await getData(params.id)
+  return {
+    title: post.title,
+    description: post.desc,
+  }
+}
+
+const BlogPost = async ({ params }) => {
+  const data = await getData(params.id);
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.info}>
-          <h1 className={styles.title}>
-            {data.title}
-          </h1>
-          <p className={styles.desc}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-            accusantium molestiae perspiciatis enim excepturi libero id tenetur
-            nulla sint consequatur itaque quae corporis obcaecati, vitae culpa
-            fuga voluptates voluptate ipsam.
-          </p>
+          <h1 className={styles.title}>{data.title}</h1>
+          <p className={styles.desc}>{data.desc}</p>
           <div className={styles.author}>
             <Image
               src="/illustration.png"
@@ -37,7 +39,7 @@ const BlogPost = async ({params}) => {
               height={40}
               className={styles.avatar}
             />
-            <span className={styles.username}>John doe</span>
+            <span className={styles.username}>{data.username}</span>
           </div>
         </div>
         <div className={styles.imageContainer}>
@@ -50,18 +52,7 @@ const BlogPost = async ({params}) => {
         </div>
       </div>
       <div className={styles.content}>
-        <p className={styles.text}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-          aliquid commodi voluptatem magni maxime quam reprehenderit quo fugiat
-          quae, cum eligendi corporis fuga temporibus possimus nobis, provident
-          repellendus debitis rem.
-          <br />
-          <br />
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam sit aspernatur laudantium, nulla quisquam numquam necessitatibus laborum velit deleniti quidem dolorum? Sed enim ratione, eveniet magnam repellat saepe optio error.
-          <br />
-          <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam eos ipsam necessitatibus. Eligendi non repudiandae illum, quidem temporibus voluptates ab facere ipsam commodi quam. Quidem quibusdam nam nulla voluptatem praesentium.
-        </p>
+        <p className={styles.text}>{data.content}</p>
       </div>
     </div>
   );
