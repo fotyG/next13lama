@@ -12,7 +12,7 @@ const Login = () => {
     return <p>Loading...</p>;
   }
 
-  if (session.status === "unauthenticated") {
+  if (session.status === "authenticated") {
     router?.push("/dashboard");
   }
 
@@ -45,7 +45,7 @@ const Login = () => {
         />
         <button className={styles.button}>Login</button>
       </form>
-      <button onClick={() => signIn("google")}>Login with Google</button>
+      <button onClick={() => signIn("google")} className={styles.button + " " + styles.google}>Login with Google</button>
     </div>
   );
 }
